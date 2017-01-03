@@ -2,14 +2,23 @@
 var app = {
   server : 'https://api.parse.com/1/classes/messages',
   messages : [],
+  // $message = $('#message');
 
   init : function () {
-
+    // determine the username
+    // determine the roomname
+    // invoke fetch, and render based on the roomname
+    //
   },
 
   send : function () {
-
-
+    var input = document.getElementById('message').value;
+    var room =
+    var message = {
+      message : input,
+      username : window.location.search,
+      roomname :
+    }
 
     $.ajax({
   // This is the url you should use to communicate with the parse API server.
@@ -19,10 +28,14 @@ var app = {
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
+        app.fetch();
+        app.clearMessages();
+        app.renderMessage();
       },
-      error: function (data) {
+      error: function (error) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-        console.error('chatterbox: Failed to send message', data);
+        console.error('chatterbox: Failed to send message', error);
+
       }
     });
   },
@@ -54,10 +67,10 @@ var app = {
   },
 
   clearMessages : function () {
-
+    $('#chats').empty()
   },
 
-  addRooms : function () {
+  renderRoom : function () {
 
   },
 
