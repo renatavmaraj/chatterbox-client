@@ -1,77 +1,47 @@
 // YOUR CODE HERE:
 var app = {
+
   server : 'https://api.parse.com/1/classes/messages',
+  username : 'anonymous',
+  roomname: 'lobby',
   messages : [],
-  // $message = $('#message');
 
   init : function () {
     // determine the username
-    // determine the roomname
-    // invoke fetch, and render based on the roomname
-    //
+    app.username = window.location.search.substr(10);
+
+    //Cache jquery selections
+    app.$message = $('#message');
+    app.$message = $('#message');
+    app.$roomSelect = $('#roomSelect');
+    app.$send = $('#send');
   },
 
-  send : function () {
-    var input = document.getElementById('message').value;
-    var room =
-    var message = {
-      message : input,
-      username : window.location.search,
-      roomname :
-    }
-
+  send: function(message){
     $.ajax({
-  // This is the url you should use to communicate with the parse API server.
       url: app.server,
-      type: 'POST',
+      method: 'POST',
       data: JSON.stringify(message),
-      contentType: 'application/json',
-      success: function (data) {
-        console.log('chatterbox: Message sent');
-        app.fetch();
-        app.clearMessages();
-        app.renderMessage();
+      success: function(){
+        console.log("Message posted successfully")
       },
-      error: function (error) {
-      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-        console.error('chatterbox: Failed to send message', error);
-
+      error: function(){
+        ("Error posting message")
       }
-    });
+    })
   },
 
-  fetch : function () {
-
+  fetch: function(){
     $.ajax({
       url: app.server,
-      type: 'GET',
-      data: '',
-      contentType: 'application/json',
-      success: function (data) {
-        app.messages = data.results;
-        console.log("These are messages: ",app.messages);
+      method: 'GET',
+      success: function(data){
+        console.log("Data has been gotten")
       },
-      error: function (data) {
-      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-        console.error('chatterbox: Failed to send message', data);
+      error: function(){
+
       }
-    });
-  },
+    })
+  }
 
-  renderMessage : function () {
-    for(var i = 0; i < app.messages.length; i++) {
-      if(app.messages[i].roomname === 'lobby') {
-        $('#chats').append("<div class='chat'><h1 class='chat username'>" + app.messages[i].username + "</h1><p>" + app.messages[i].text + "</p></div>")
-      }
-    }
-  },
-
-  clearMessages : function () {
-    $('#chats').empty()
-  },
-
-  renderRoom : function () {
-
-  },
-
-}
+};
