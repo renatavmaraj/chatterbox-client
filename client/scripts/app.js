@@ -18,7 +18,8 @@ var app = {
        app.$send = $('#send');
 
        //Add listeners
-       app.$send.on('submit', app.handleSubmit)
+       app.$send.on('submit', app.handleSubmit);
+       app.$roomSelect.on('change', app.handleRoomChange);
 
        //Fetch all messages when app starts up
        app.fetch();
@@ -123,15 +124,19 @@ var app = {
     app.$roomSelect.html('<option value="__newRoom">New Room...</option></select>')
 
     if(messagesArray) {
+      var rooms = {};
       messagesArray.forEach(function(message){
         //render room option in each message to menu
         var roomname = message.roomname;
-        if(roomname) {
-          app.renderRoom(roomname)
+        //if there is a roomname and if it doesn't exist already
+        if(roomname && !rooms[roomname]) {
+          app.renderRoom(roomname);
+
+          rooms[roomname] = true;
         }
       })
     }
-
+    app.$roomSelect.val(app.roomname);
    },
 
    renderRoom: function(roomname) {
@@ -142,6 +147,26 @@ var app = {
     //Add to select
     app.$roomSelect.append($option)
 
+    //Select elements emit a change event whenever the room is changed
+
+   },
+
+   handleRoomChange: function(event) {
+    var selectIndex = app.$roomSelect.prop('selectedIndex');
+
+    if(selectIndex  === 0) {
+      //create a new room
+      var roomname = prompt('Enter room name');
+      if(roomname) {
+        app.roomname = roomname;
+        app.renderRoom(roomname);
+        app.$roomSelect.val(roomname)
+      }
+    } else {
+      //change to existing room
+      app.roomname = app.$roomSelect.val()
+    }
+    app.renderMessage(app.messages);
    }
 
   };
